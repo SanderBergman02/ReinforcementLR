@@ -3,7 +3,7 @@ import random
 from enum import Enum
 from collections import namedtuple
 import numpy as np
-
+from pathfinding import pathfinding
 pygame.init()
 font = pygame.font.Font('arial.ttf', 25)
 #font = pygame.font.SysFont('arial', 25)
@@ -24,7 +24,7 @@ BLUE2 = (0, 100, 255)
 BLACK = (0,0,0)
 
 BLOCK_SIZE = 20
-SPEED = 20
+SPEED = 60
 
 class SnakeGameAI:
     
@@ -74,9 +74,10 @@ class SnakeGameAI:
         # 3. check if game over
         reward = 0
         game_over = False
-        if self._is_collision() or self.frame_iter > 100*len(self.snake):
+        if self.is_collision() or self.frame_iter > 100*len(self.snake):
             reward = -10
             game_over = True
+            # print(self.snake[0].x, self.snake[0].y)
             return reward, game_over, self.score
             
         # 4. place new food or just move
@@ -86,14 +87,21 @@ class SnakeGameAI:
             self._place_food()
         else:
             self.snake.pop()
-        
+
+        # path = pathfinding((int(self.h/BLOCK_SIZE)+1, int(self.w/BLOCK_SIZE)+1), self.snake, self.snake[0], self.food, self)
+        # print(path)
+        # if path == None:
+        #     reward -= 5
+        # else:
+        #     reward += 1
+
         # 5. update ui and clock
         self._update_ui()
         self.clock.tick(SPEED)
         # 6. return game over and score
         return reward, game_over, self.score
     
-    def _is_collision(self, pt=None):
+    def is_collision(self, pt=None):
         if pt == None:
             pt = self.head
         # hits boundary
