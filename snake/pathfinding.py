@@ -60,9 +60,6 @@ def pathfinding(size, blockers, head, fruit, game):
             matrix[y][x] = 2
 
     end = (int(math.floor(fruit.y/20)), int(math.floor(fruit.x/20)))
-    # print(end)
-    # matrix[begin[0]][begin[1]] = 2
-    # matrix[end[0]][end[1]] = 3
 
     path = astar(matrix, begin, end)
 
@@ -72,12 +69,12 @@ def pathfinding(size, blockers, head, fruit, game):
         path = (())
 
     if path == None:
-        print(blockers)
-        print(head)
-        print(end)
+        # print(blockers)
+        # print(head)
+        # print(end)
         matrix[begin[0]][begin[1]] = 2
         matrix[end[0]][end[1]] = 3
-        print(matrix)
-        print(path)
+        # print(matrix)
+        # print(path)
         # time.sleep(10)
     return path

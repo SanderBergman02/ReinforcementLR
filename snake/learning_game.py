@@ -88,10 +88,10 @@ class SnakeGameAI:
         else:
             self.snake.pop()
 
-        # path = pathfinding((int(self.h/BLOCK_SIZE)+1, int(self.w/BLOCK_SIZE)+1), self.snake, self.snake[0], self.food, self)
+        path = pathfinding((int(self.h/BLOCK_SIZE)+1, int(self.w/BLOCK_SIZE)+1), self.snake, self.snake[0], self.food, self)
         # print(path)
-        # if path == None:
-        #     reward -= 5
+        if path == None:
+            reward -= 5
         # else:
         #     reward += 1
 
