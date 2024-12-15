@@ -1217,7 +1217,7 @@ function Game:save_metrics()
     G.FILE_HANDLER.settings = true
     G.FILE_HANDLER.update_queued = true
 end
-
+--pointer prep game
 function Game:prep_stage(new_stage, new_state, new_game_obj)
     for k, v in pairs(self.CONTROLLER.locks) do
         self.CONTROLLER.locks[k] = nil
@@ -1227,7 +1227,7 @@ function Game:prep_stage(new_stage, new_state, new_game_obj)
     self.STATE = new_state or self.STATES.MENU
     self.STATE_COMPLETE = false
     self.SETTINGS.paused = false
-    io.write(self.STATE)
+
     self.ROOM = Node{T={
         x = self.ROOM_PADDING_W,
         y = self.ROOM_PADDING_H,
@@ -1999,7 +1999,7 @@ end
 
 function Game:start_run(args)
     args = args or {}
-    io.output('test.txt')
+    local file = io.output('test.txt', 'W')
     local saveTable = args.savetext or nil
     G.SAVED_GAME = nil
 
@@ -2522,7 +2522,7 @@ function Game:update(dt)
             end
         end
 
-
+        --pointer selecting hand
         if self.STATE == self.STATES.SELECTING_HAND then
             if (not G.hand.cards[1]) and G.deck.cards[1] then 
                 G.STATE = G.STATES.DRAW_TO_HAND
@@ -3166,10 +3166,16 @@ function Game:update_play_tarot(dt)
     if self.buttons then self.buttons:remove(); self.buttons = nil end
 end
 
+--pointer hand played
+--k, v in pairs(self.hand.cards) is card positions in hand
 function Game:update_hand_played(dt)
     if self.buttons then self.buttons:remove(); self.buttons = nil end
     if self.shop then self.shop:remove(); self.shop = nil end
-
+    local file = io.output('test.txt', 'W')
+    for k, v in pairs(self.hand.cards) do 
+        file:write(tostring(k, v))
+    end
+    file:close()
     if not G.STATE_COMPLETE then
         G.STATE_COMPLETE = true
         G.E_MANAGER:add_event(Event({
