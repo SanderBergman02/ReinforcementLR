@@ -1,10 +1,17 @@
 from lupa.lua54 import LuaRuntime
+import time
 
-lua = LuaRuntime(unpack_returned_tuples=True)
-# lua.package.cpath = "C:\\Users\\Gebruiker\\Documents\\MEGA\\modding\\modded balatro"
-# test = lua.eval("require('test')", name=db)
-# print(test)
-# lua.test[1].tester(1)
-test = lua.eval(function(f,n) return )
-lua.require('test2')
-lua.execute('require test2 text2.tester(1)')
+def observe_hand():
+    f = open("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro\\test.txt", "r")
+    print(f.read())
+    old_hand = ''
+    while True:
+        cards_in_hand = open("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Balatro\\test.txt", "r").read()
+        if old_hand == cards_in_hand:
+            print(cards_in_hand)
+            old_hand = cards_in_hand
+        data = cards_in_hand.split()
+        print(data)
+        time.sleep(0.5)
+
+observe_hand()

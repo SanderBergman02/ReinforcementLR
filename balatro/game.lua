@@ -2989,6 +2989,7 @@ function Game:state_col(_state)
     return (_state*15251252.2/5.132)%1,  (_state*1422.5641311/5.42)%1,  (_state*1522.1523122/5.132)%1, 1
 end
 
+--pointer update selected hand
 function Game:update_selecting_hand(dt)
     if not self.deck_preview and not G.OVERLAY_MENU and (
         (self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and ((not self.deck.cards[1].states.drag.is) or self.CONTROLLER.HID.touch) and (not self.CONTROLLER.HID.controller)) or 
@@ -3173,7 +3174,14 @@ function Game:update_hand_played(dt)
     if self.shop then self.shop:remove(); self.shop = nil end
     local file = io.output('test.txt', 'W')
     for k, v in pairs(self.hand.cards) do 
-        file:write(tostring(k, v))
+        for i, j in pairs(v) do 
+            if i == 'playing_card' then
+                file:write(tostring(i))
+                file:write('\n')
+                file:write(tostring(j))
+                file:write('\n')
+            end
+        end
     end
     file:close()
     if not G.STATE_COMPLETE then
