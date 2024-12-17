@@ -3,7 +3,7 @@ import random
 import numpy as np
 from learning_game import SnakeGameAI, Direction, Point
 from collections import deque
-from model import Linear_QNet, QTrainer
+from model import Linear_QNet, Linear_QNetGen3, QTrainer
 from helper import plot
 from pathfinding import pathfinding
 import time
@@ -19,7 +19,7 @@ class Agent:
         self.gamma = 0.9  # <1
         self.memory = deque(maxlen=max_mem)
 
-        self.model = Linear_QNet(13, 256, 3)
+        self.model = Linear_QNetGen3(13, 128, 3)
         # self.model.load_state_dict(torch.load('./models/model65.pth'))
         # self.model.eval()
         self.trainer = QTrainer(self.model, lr=lr, gamma=self.gamma)

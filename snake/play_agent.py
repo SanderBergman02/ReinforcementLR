@@ -149,20 +149,20 @@ def train():
         if done:
             # train long memory, plot results
             game.reset()
-            agent.n_game += 1
+            # agent.n_game += 1
             # agent.train_long_memory()
 
-            if score > record:
-                record = score
-                agent.model.save(file_name='model{}.pth'.format(score))
+            # if score > record:
+            #     record = score
+            #     agent.model.save(file_name='model{}.pth'.format(score))
 
             print('Game', agent.n_game, 'Score', score, 'Record', record)
 
-            plot_scores.append(score)
-            total_score += score
-            mean_score = total_score / agent.n_game
-            avg_scores.append(mean_score)
-            plot(plot_scores, avg_scores)
+            # plot_scores.append(score)
+            # total_score += score
+            # mean_score = total_score / agent.n_game
+            # avg_scores.append(mean_score)
+            # plot(plot_scores, avg_scores)
 
 if __name__ == '__main__':
     train()

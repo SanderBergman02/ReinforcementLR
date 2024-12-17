@@ -19,8 +19,8 @@ Point = namedtuple('Point', 'x, y')
 # rgb colors
 WHITE = (255, 255, 255)
 RED = (200,0,0)
-BLUE1 = (0, 0, 255)
-BLUE2 = (0, 100, 255)
+BLUE1 = (255, 255, 255)
+BLUE2 = (94, 195, 0)
 BLACK = (0,0,0)
 
 BLOCK_SIZE = 20
@@ -75,14 +75,14 @@ class SnakeGameAI:
         reward = 0
         game_over = False
         if self.is_collision() or self.frame_iter > 100*len(self.snake):
-            reward = -10
+            reward = -15
             game_over = True
             # print(self.snake[0].x, self.snake[0].y)
             return reward, game_over, self.score
             
         # 4. place new food or just move
         if self.head == self.food:
-            reward = 10
+            reward = 20
             self.score += 1
             self._place_food()
         else:
@@ -92,8 +92,8 @@ class SnakeGameAI:
         # print(path)
         if path == None:
             reward -= 5
-        # else:
-        #     reward += 1
+        else:
+            reward += max(0, 5-(len(path)/2))
 
         # 5. update ui and clock
         self._update_ui()
