@@ -2522,6 +2522,10 @@ function Game:update(dt)
             end
         end
 
+        local file = io.output('state.txt', 'W')
+        file:write(tostring(self.STATE))
+        file:close()
+
         --pointer selecting hand
         if self.STATE == self.STATES.SELECTING_HAND then
             if (not G.hand.cards[1]) and G.deck.cards[1] then 
@@ -2991,6 +2995,16 @@ end
 
 --pointer update selected hand
 function Game:update_selecting_hand(dt)
+    local file = io.output('test.txt', 'W')
+    for k, v in pairs(self.hand.cards) do 
+        for i, j in pairs(v) do 
+            if i == 'playing_card' then
+                file:write(tostring(j))
+                file:write('\n')
+            end
+        end
+    end
+    file:close()
     if not self.deck_preview and not G.OVERLAY_MENU and (
         (self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and ((not self.deck.cards[1].states.drag.is) or self.CONTROLLER.HID.touch) and (not self.CONTROLLER.HID.controller)) or 
         G.CONTROLLER.held_buttons.triggerleft) then
@@ -3172,18 +3186,7 @@ end
 function Game:update_hand_played(dt)
     if self.buttons then self.buttons:remove(); self.buttons = nil end
     if self.shop then self.shop:remove(); self.shop = nil end
-    local file = io.output('test.txt', 'W')
-    for k, v in pairs(self.hand.cards) do 
-        for i, j in pairs(v) do 
-            if i == 'playing_card' then
-                file:write(tostring(i))
-                file:write('\n')
-                file:write(tostring(j))
-                file:write('\n')
-            end
-        end
-    end
-    file:close()
+    
     if not G.STATE_COMPLETE then
         G.STATE_COMPLETE = true
         G.E_MANAGER:add_event(Event({
