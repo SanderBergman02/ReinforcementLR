@@ -1999,7 +1999,6 @@ end
 
 function Game:start_run(args)
     args = args or {}
-    local file = io.output('test.txt', 'W')
     local saveTable = args.savetext or nil
     G.SAVED_GAME = nil
 
@@ -2024,7 +2023,6 @@ function Game:start_run(args)
     self.GAME.STOP_USE = 0
     self.GAME.selected_back = Back(selected_back)
     self.GAME.selected_back_key = selected_back
-    io.write(self.GAME.stake)
     G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]
     G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]
 
@@ -2995,7 +2993,7 @@ end
 
 --pointer update selected hand
 function Game:update_selecting_hand(dt)
-    local file = io.output('test.txt', 'W')
+    local file = io.output('hand.txt', 'W')
     for k, v in pairs(self.hand.cards) do 
         for i, j in pairs(v) do 
             if i == 'playing_card' then

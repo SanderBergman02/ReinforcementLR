@@ -22,6 +22,7 @@ def observe_hand():
     old_state = ''
     while True:
         state = open("D:\\Steam1\\steamapps\\common\\Balatro\\state.txt", "r").read()
+        print(state)
         if old_state != state and state != '':
             old_state = state
             print(state)
