@@ -7,7 +7,7 @@ def make_input(hand):
     return data
 
 def predict_play_discard():
-    cards_in_hand = open("D:\\Steam1\\steamapps\\common\\Balatro\\test.txt", "r").read()
+    cards_in_hand = open("D:\\Steam1\\steamapps\\common\\Balatro\\jokers.txt", "r").read()
     hand = cards_in_hand.split()
     data = make_input(hand)
     print(data)

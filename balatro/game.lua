@@ -2520,6 +2520,17 @@ function Game:update(dt)
             end
         end
 
+        local file = io.output('jokers.txt', 'W')
+        file:close()
+
+        local file = io.output('deck.txt', 'W')
+        file:write(tostring(self.deck))
+        file:close()
+
+        local file = io.output('round+score.txt', 'W')
+        file:write(tostring(self.round))
+        file:close()
+
         local file = io.output('state.txt', 'W')
         file:write(tostring(self.STATE))
         file:close()
@@ -3003,6 +3014,26 @@ function Game:update_selecting_hand(dt)
         end
     end
     file:close()
+
+    local file = io.output('jokers.txt', 'W')
+    for k, v in pairs(self.jokers) do 
+        file:write(tostring(k))
+        file:write('\n')
+        if k == 'cards' then
+            for i, j in pairs(v) do
+                file:write(tostring(i))
+                file:write('\n')
+                for c, x in pairs(j) do
+                    if c == 'sort_id' then
+                        file:write(tostring(x))
+                        file:write('\n')
+                    end
+                end
+            end
+        end
+    end
+    file:close()
+
     if not self.deck_preview and not G.OVERLAY_MENU and (
         (self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and ((not self.deck.cards[1].states.drag.is) or self.CONTROLLER.HID.touch) and (not self.CONTROLLER.HID.controller)) or 
         G.CONTROLLER.held_buttons.triggerleft) then
