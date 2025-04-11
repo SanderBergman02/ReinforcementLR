@@ -1,4 +1,5 @@
 from lupa.lua54 import LuaRuntime
+from agents import base_Agent
 import time
 
 def make_input(hand):
@@ -18,10 +19,12 @@ def predict_play_discard():
 # 'SPECTRAL_PACK', '15', 'DRAW_TO_HAND', '3', 'HAND_PLAYED', '2', 'ROUND_EVAL', '8',
 # 'DEMO_CTA', '16', 'GAME_OVER', '4', 'SANDBOX', '14', 'STANDARD_PACK', '17', 'NEW_ROUND', '19',
 # 'BUFFOON_PACK', '18', 'SHOP', '5', 'PLAY_TAROT', '6', 'MENU', '11', 'TUTORIAL', '12', 'SELECTING_HAND', '1']
-def observe_hand():
+def observer():
+    path = "D:\\Steam1\\steamapps\\common\\Balatro\\"
+    agent = base_Agent(path)
     old_state = ''
     while True:
-        state = open("D:\\Steam1\\steamapps\\common\\Balatro\\state.txt", "r").read()
+        state = open(path + "state.txt", "r").read()
         print(state)
         if old_state != state and state != '':
             old_state = state
@@ -30,7 +33,7 @@ def observe_hand():
                 predict_play_discard()
         time.sleep(0.1)
 
-observe_hand()
+observer()
 
 
 

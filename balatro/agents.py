@@ -11,7 +11,8 @@ batch_size = 1000
 lr = 0.001
 
 class base_Agent:
-    def __init__(self):
+    def __init__(self, path):
+        self.path = path
         self.n_game = 0
         self.epsilon = 0
         self.gamma = 0.9  # <1
@@ -22,68 +23,44 @@ class base_Agent:
         # self.model.eval()
         self.trainer = QTrainer(self.model, lr=lr, gamma=self.gamma)
 
-    def get_state(self, game):
-        return self.get_general_state(game)
+    def get_hand(self):
+        hand = open(self.path + "deck.txt", "r").read()
+        hand_embed = []
+        list_of_cards = ['1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '3', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '4', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '5', '50', '51', '52', '6', '7', '8', '9']
+        for i in range(10):
+            if i < len(hand):
+                data = [1 if card in hand[i] else 0 for card in list_of_cards]
+            else:
+                data = [0 for card in list_of_cards]
+            hand_embed.append(data)
+        return hand_embed
+
+    def get_deck(self):
+        deck = open(self.path + "hand.txt", "r").read()
+        deck_embed = []
+        list_of_cards = ['1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '3', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '4', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '5', '50', '51', '52', '6', '7', '8', '9']
+        for i in range(10):
+            if i < len(deck):
+                data = [1 if card in deck[i] else 0 for card in list_of_cards]
+            else:
+                data = [0 for card in list_of_cards]
+            deck_embed.append(data)
+        return deck_embed
+
+    def get_jokers(self):
+        jokers = open(self.path + "jokers.txt", "r").read()
+        jokers_embed = []
+        list_of_cards = ['1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '3', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '4', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '5', '50', '51', '52', '6', '7', '8', '9']
+        for i in range(10):
+            if i < len(jokers):
+                data = [1 if card in jokers[i] else 0 for card in list_of_cards]
+            else:
+                data = [0 for joker in list_of_cards]
+            jokers_embed.append(data)
+        return jokers_embed
 
     def get_general_state(self, game):
-        head = game.snake[0]
-        point_l = Point(head.x - 20, head.y)
-        point_r = Point(head.x + 20, head.y)
-        point_u = Point(head.x, head.y - 20)
-        point_d = Point(head.x, head.y + 20)
-
-        dir_l = game.direction == Direction.LEFT
-        dir_r = game.direction == Direction.RIGHT
-        dir_u = game.direction == Direction.UP
-        dir_d = game.direction == Direction.DOWN
-
-        state = [
-            # Danger straight
-            (dir_r and game.is_collision(point_r)) or
-            (dir_l and game.is_collision(point_l)) or
-            (dir_u and game.is_collision(point_u)) or
-            (dir_d and game.is_collision(point_d)),
-
-            # danger right
-            (dir_u and game.is_collision(point_r)) or
-            (dir_d and game.is_collision(point_l)) or
-            (dir_l and game.is_collision(point_u)) or
-            (dir_r and game.is_collision(point_d)),
-
-            # danger left
-            (dir_d and game.is_collision(point_r)) or
-            (dir_u and game.is_collision(point_l)) or
-            (dir_r and game.is_collision(point_u)) or
-            (dir_l and game.is_collision(point_d)),
-
-            # move direction
-            dir_l,
-            dir_r,
-            dir_u,
-            dir_d,
-
-            game.food.x < game.head.x,
-            game.food.x > game.head.x,
-            game.food.y < game.head.y,
-            game.food.y > game.head.y,
-
-
-            # stuck right
-            (dir_u and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_r, game.food, game) == None) and not game.is_collision(point_r)) or
-            (dir_d and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_l, game.food, game) == None) and not game.is_collision(point_l)) or
-            (dir_l and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_u, game.food, game) == None) and not game.is_collision(point_u)) or
-            (dir_r and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_d, game.food, game) == None) and not game.is_collision(point_d)),
-
-            # stuck left
-            (dir_d and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_r, game.food, game) == None) and not game.is_collision(point_r)) or
-            (dir_u and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_l, game.food, game) == None) and not game.is_collision(point_l)) or
-            (dir_r and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_u, game.food, game) == None) and not game.is_collision(point_u)) or
-            (dir_l and (pathfinding((int(game.h/20)+1, int(game.w/20)+1), game.snake, point_d, game.food, game) == None) and not game.is_collision(point_d))
-        ]
-        # print('hi')
-        # if state[11] == True or state[12] == True:
-        #     print(state)
-        return np.array(state, dtype=int)
+        return 1
 
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
@@ -123,8 +100,6 @@ def train():
     avg_scores = []
     total_score = 0
     record = 0
-    agent = Agent()
-    game = SnakeGameAI()
 
     while True:
         # get old state
