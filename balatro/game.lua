@@ -2520,20 +2520,20 @@ function Game:update(dt)
             end
         end
 
-        local file = io.output('jokers.txt', 'W')
-        file:close()
+        -- local file = io.output('jokers.txt', 'W')
+        -- file:close()
 
-        local file = io.output('deck.txt', 'W')
-        file:write(tostring(self.deck))
-        file:close()
+        -- local file = io.output('deck.txt', 'W')
+        -- file:write(tostring(self.deck))
+        -- file:close()
 
-        local file = io.output('round+score.txt', 'W')
-        file:write(tostring(self.round))
-        file:close()
+        -- local file = io.output('round+score.txt', 'W')
+        -- file:write(tostring(self.round))
+        -- file:close()
 
-        local file = io.output('state.txt', 'W')
-        file:write(tostring(self.STATE))
-        file:close()
+        -- local file = io.output('state.txt', 'W')
+        -- file:write(tostring(self.STATE))
+        -- file:close()
 
         --pointer selecting hand
         if self.STATE == self.STATES.SELECTING_HAND then
@@ -3006,6 +3006,17 @@ end
 function Game:update_selecting_hand(dt)
     local file = io.output('hand.txt', 'W')
     for k, v in pairs(self.hand.cards) do 
+        for i, j in pairs(v) do 
+            if i == 'playing_card' then
+                file:write(tostring(j))
+                file:write('\n')
+            end
+        end
+    end
+    file:close()
+
+    local file = io.output('deck.txt', 'W')
+    for k, v in pairs(self.deck.cards) do 
         for i, j in pairs(v) do 
             if i == 'playing_card' then
                 file:write(tostring(j))
