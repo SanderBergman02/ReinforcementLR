@@ -3032,7 +3032,7 @@ function Game:update_selecting_hand(dt)
         file:write('\n')
         if k == 'cards' then
             for i, j in pairs(v) do
-                file:write(tostring(i))
+                file:write(tostring(i, j))
                 file:write('\n')
                 for c, x in pairs(j) do
                     if c == 'sort_id' then
