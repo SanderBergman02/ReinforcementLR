@@ -2531,9 +2531,9 @@ function Game:update(dt)
         -- file:write(tostring(self.round))
         -- file:close()
 
-        -- local file = io.output('state.txt', 'W')
-        -- file:write(tostring(self.STATE))
-        -- file:close()
+        local file = io.output('state.txt', 'W')
+        file:write(tostring(self.STATE))
+        file:close()
 
         --pointer selecting hand
         if self.STATE == self.STATES.SELECTING_HAND then
@@ -3006,42 +3006,29 @@ end
 function Game:update_selecting_hand(dt)
     local file = io.output('hand.txt', 'W')
     for k, v in pairs(self.hand.cards) do 
-        for i, j in pairs(v) do 
-            if i == 'playing_card' then
-                file:write(tostring(j))
-                file:write('\n')
-            end
-        end
+        file:write(v.config.card.suit, tostring(v.config.card.value))
+        file:write('\n')
     end
     file:close()
 
     local file = io.output('deck.txt', 'W')
     for k, v in pairs(self.deck.cards) do 
-        for i, j in pairs(v) do 
-            if i == 'playing_card' then
-                file:write(tostring(j))
-                file:write('\n')
-            end
-        end
+        file:write(v.config.card.suit, tostring(v.config.card.value))
+        file:write('\n')
     end
     file:close()
 
     local file = io.output('jokers.txt', 'W')
-    for k, v in pairs(self.jokers) do 
-        file:write(tostring(k))
+    --pointer look at card.lua for details of cards
+    for k, v in pairs(self.jokers.cards) do 
+        -- for i, j in pairs(v.config) do
+        --     file:write(tostring(i))
+        --     file:write('\n')
+        --     file:write(tostring(j))
+        --     file:write('\n') 
+        -- end
+        file:write(tostring(v.config.center_key))
         file:write('\n')
-        if k == 'cards' then
-            for i, j in pairs(v) do
-                file:write(tostring(i, j))
-                file:write('\n')
-                for c, x in pairs(j) do
-                    if c == 'sort_id' then
-                        file:write(tostring(x))
-                        file:write('\n')
-                    end
-                end
-            end
-        end
     end
     file:close()
 
